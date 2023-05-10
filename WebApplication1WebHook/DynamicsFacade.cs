@@ -25,7 +25,8 @@ namespace WebApplication1WebHook
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _tokenBase64);
-            String jsonData = JsonConvert.SerializeObject(incoming);
+            Payloade payloade = new Payloade() {Info = incoming };
+            String jsonData = JsonConvert.SerializeObject(payloade);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync("http://" + this.ip + "/BC/ODataV4/wordpress_createcustomerws?company=CRONUS%20Danmark%20A%2FS", content);
             string data = "";
@@ -39,5 +40,10 @@ namespace WebApplication1WebHook
             }
             System.Diagnostics.Debug.WriteLine("Result: " + data);
         }
+    }
+
+    public class Payloade
+    {
+        public string Info;
     }
 }
