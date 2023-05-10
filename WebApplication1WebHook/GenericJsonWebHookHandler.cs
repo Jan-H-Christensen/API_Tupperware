@@ -40,7 +40,7 @@ namespace WebApplication1WebHook
             }
 
             System.Diagnostics.Debug.WriteLine("Time: " + DateTime.Now.TimeOfDay.ToString());
-
+            System.Diagnostics.Debug.WriteLine(data.ToString());
             return Task.FromResult(HttpStatusCode.OK);
         }
     }
