@@ -16,7 +16,7 @@ namespace WebApplication1WebHook
     public class DynamicsFacade
     {
         private string Password = $"admin:Password";
-        private string ip = "";
+        private string ip = "172.18.129.98:7048";
         public async Task CreateOrder(string incoming)
         {
             var _token = Password;
@@ -24,10 +24,10 @@ namespace WebApplication1WebHook
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _tokenBase64);
-            Payloade payloade = new Payloade() {Info = incoming };
+            Info payloade = new Info() {info = incoming};
             String jsonData = JsonConvert.SerializeObject(payloade);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PostAsync("http://" + this.ip + "/BC/ODataV4/wordpress_createcustomerws?company=CRONUS%20Danmark%20A%2FS", content);
+            HttpResponseMessage response = await client.PostAsync("http://" + this.ip + "/BC/ODataV4/WooCom_NewSalesOrder?company=CRONUS%20Danmark%20A%2FS", content);
             string data = "";
             if (response.IsSuccessStatusCode)
             {
@@ -40,17 +40,19 @@ namespace WebApplication1WebHook
             System.Diagnostics.Debug.WriteLine("Result: " + data);
         }
 
-        public async Task CreateCustomer(string incoming)
+        public async Task CreateCustomer(JObject incoming)
         {
             var _token = Password;
             var _tokenBase64 = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(_token));
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _tokenBase64);
-            Payloade payloade = new Payloade() { Info = incoming };
+
+            Info payloade = new Info() { info = incoming.ToString()};
             String jsonData = JsonConvert.SerializeObject(payloade);
+
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PostAsync("http://" + this.ip + "/BC/ODataV4/wordpress_createcustomerws?company=CRONUS%20Danmark%20A%2FS", content);
+            HttpResponseMessage response = await client.PostAsync("http://" + this.ip + "/BC/ODataV4/WooCom_NewCustomer?company=CRONUS%20Danmark%20A%2FS", content);
             string data = "";
             if (response.IsSuccessStatusCode)
             {
@@ -64,8 +66,15 @@ namespace WebApplication1WebHook
         }
     }
 
-    public class Payloade
+    class Info
     {
-        public string Info;
+        [JsonProperty("info")]
+        public string info { get; set; }
+    }
+
+    class Order
+    {
+        [JsonProperty("response")]
+        public string response { get; set; }
     }
 }

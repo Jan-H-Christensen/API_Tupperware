@@ -37,7 +37,7 @@ namespace WebApplication1WebHook
                 else if (topic.ToLower().Equals("customer.updated"))
                 {
                     DynamicsFacade dynamicsFacade = new DynamicsFacade();
-                    dynamicsFacade.CreateCustomer(data.ToString());
+                    dynamicsFacade.CreateCustomer(data);
                     System.Diagnostics.Debug.WriteLine("new Customer");
                 }
             }
@@ -46,7 +46,6 @@ namespace WebApplication1WebHook
             }
 
             System.Diagnostics.Debug.WriteLine("Time: " + DateTime.Now.TimeOfDay.ToString());
-            System.Diagnostics.Debug.WriteLine(data.ToString());
             return Task.FromResult(HttpStatusCode.OK);
         }
     }
