@@ -31,8 +31,14 @@ namespace WebApplication1WebHook
                 if (topic.ToLower().Equals("order.created"))
                 {
                     DynamicsFacade dynamicsFacade = new DynamicsFacade();
-                    dynamicsFacade.CreateOrderAndCustomer(data.ToString());
+                    dynamicsFacade.CreateOrder(data.ToString());
                     System.Diagnostics.Debug.WriteLine("new order");
+                }
+                else if (topic.ToLower().Equals("customer.updated"))
+                {
+                    DynamicsFacade dynamicsFacade = new DynamicsFacade();
+                    dynamicsFacade.CreateCustomer(data.ToString());
+                    System.Diagnostics.Debug.WriteLine("new Customer");
                 }
             }
             catch (Exception ex) {

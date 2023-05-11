@@ -17,7 +17,7 @@ namespace WebApplication1WebHook
     {
         private string Password = $"admin:Password";
         private string ip = "";
-        public async Task CreateOrderAndCustomer(string incoming)
+        public async Task CreateOrder(string incoming)
         {
             var _token = Password;
             var _tokenBase64 = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(_token));
@@ -25,6 +25,29 @@ namespace WebApplication1WebHook
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _tokenBase64);
             Payloade payloade = new Payloade() {Info = incoming };
+            String jsonData = JsonConvert.SerializeObject(payloade);
+            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PostAsync("http://" + this.ip + "/BC/ODataV4/wordpress_createcustomerws?company=CRONUS%20Danmark%20A%2FS", content);
+            string data = "";
+            if (response.IsSuccessStatusCode)
+            {
+                data = await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Error");
+            }
+            System.Diagnostics.Debug.WriteLine("Result: " + data);
+        }
+
+        public async Task CreateCustomer(string incoming)
+        {
+            var _token = Password;
+            var _tokenBase64 = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(_token));
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _tokenBase64);
+            Payloade payloade = new Payloade() { Info = incoming };
             String jsonData = JsonConvert.SerializeObject(payloade);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync("http://" + this.ip + "/BC/ODataV4/wordpress_createcustomerws?company=CRONUS%20Danmark%20A%2FS", content);
