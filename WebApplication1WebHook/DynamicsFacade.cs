@@ -17,18 +17,22 @@ namespace WebApplication1WebHook
     {
         private string Password = $"admin:Password";
         private string ip = "172.18.129.98:7048";
-        public async Task CreateOrder(string incoming)
+        public async Task CreateOrder(JObject incoming)
         {
             var _token = Password;
             var _tokenBase64 = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(_token));
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _tokenBase64);
-            Info payloade = new Info() {info = incoming};
+            
+            Info payloade = new Info() { info = incoming.ToString() };
             String jsonData = JsonConvert.SerializeObject(payloade);
+            System.Diagnostics.Debug.WriteLine(jsonData);
+            
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync("http://" + this.ip + "/BC/ODataV4/WooCom_NewSalesOrder?company=CRONUS%20Danmark%20A%2FS", content);
             string data = "";
+            
             if (response.IsSuccessStatusCode)
             {
                 data = await response.Content.ReadAsStringAsync();
