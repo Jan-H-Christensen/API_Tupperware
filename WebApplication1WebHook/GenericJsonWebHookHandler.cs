@@ -25,7 +25,7 @@ namespace WebApplication1WebHook
             {
                 String topic = context.Request.Headers.GetValues("X-WC-Webhook-Topic").First();
                 String eventType = context.Request.Headers.GetValues("x-wc-webhook-event").First();
-
+                System.Diagnostics.Debug.WriteLine(topic.ToLower());
                 if (topic.ToLower().Equals("order.created"))
                 {
                     DynamicsFacade dynamicsFacade = new DynamicsFacade();
