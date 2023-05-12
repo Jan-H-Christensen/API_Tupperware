@@ -27,7 +27,6 @@ namespace WebApplication1WebHook
             
             Info payloade = new Info() { info = incoming.ToString()};
             String jsonData = JsonConvert.SerializeObject(payloade);
-            System.Diagnostics.Debug.WriteLine(jsonData);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync("http://" + this.ip + "/BC/ODataV4/WooCom_NewSalesOrder?company=CRONUS%20Danmark%20A%2FS", content);
             string data = "";
@@ -53,7 +52,6 @@ namespace WebApplication1WebHook
 
             Info payloade = new Info() { info = incoming.ToString()};
             String jsonData = JsonConvert.SerializeObject(payloade);
-            System.Diagnostics.Debug.WriteLine(jsonData);
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             HttpResponseMessage response = await client.PostAsync("http://" + this.ip + "/BC/ODataV4/WooCom_NewCustomer?company=CRONUS%20Danmark%20A%2FS", content);
             string data = "";
