@@ -19,15 +19,12 @@ namespace WebApplication1WebHook
         public override Task ExecuteAsync( string receiver, WebHookHandlerContext context)
         {
             //// Get JSON from WebHook
-            System.Diagnostics.Debug.WriteLine(context);
             JObject data = context.GetDataOrDefault<JObject>();
 
             try
             {
                 String topic = context.Request.Headers.GetValues("X-WC-Webhook-Topic").First();
                 String eventType = context.Request.Headers.GetValues("x-wc-webhook-event").First();
-
-                dynamic dData = data;
 
                 if (topic.ToLower().Equals("order.created"))
                 {
@@ -39,7 +36,7 @@ namespace WebApplication1WebHook
                 {
                     DynamicsFacade dynamicsFacade = new DynamicsFacade();
                     dynamicsFacade.CreateCustomer(data);
-                    System.Diagnostics.Debug.WriteLine("new order");
+                    System.Diagnostics.Debug.WriteLine("new customer");
                 }
             }
             catch (Exception ex)
@@ -48,7 +45,6 @@ namespace WebApplication1WebHook
             }
 
             System.Diagnostics.Debug.WriteLine("Time: " + DateTime.Now.TimeOfDay.ToString());
-            System.Diagnostics.Debug.WriteLine(data.ToString());
             return Task.FromResult(HttpStatusCode.OK);
         }
     }

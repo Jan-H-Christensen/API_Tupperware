@@ -16,7 +16,7 @@ namespace WebApplication1WebHook
     public class DynamicsFacade
     {
         private string Password = $"admin:Password";
-        private string ip = "172.18.129.98:7048";
+        private string ip = "172.18.141.58:7048";
         public async Task CreateOrder(JObject incoming)
         {
             var _token = Password;
@@ -25,7 +25,7 @@ namespace WebApplication1WebHook
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _tokenBase64);
             
-            Info payloade = new Info() { info = incoming.ToString() };
+            Info payloade = new Info() { info = incoming.ToString()};
             String jsonData = JsonConvert.SerializeObject(payloade);
             System.Diagnostics.Debug.WriteLine(jsonData);
             
